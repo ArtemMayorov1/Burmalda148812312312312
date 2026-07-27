@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Топ Создателей и Ремпагеров (1-1000)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-image: url('Sky.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-color: #0d0d12;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        /* Шапка */
+        header {
+            background: rgba(15, 15, 22, 0.9);
+            backdrop-filter: blur(12px);
+            border: 2px solid #2e2e42;
+            border-radius: 16px;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        header h1 {
+            font-size: 22px;
+            color: #ff0055;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 12px rgba(255, 0, 85, 0.4);
+        }
+
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            background: #7000ff;
+            color: #fff;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
+        }
+
+        .btn:hover {
+            background: #8b24ff;
+            transform: translateY(-2px);
+        }
+
+        .btn-yellow { background: #ffe600; color: #000; }
+        .btn-yellow:hover { background: #ffff4d; }
+        .btn-danger { background: #ff334b; color: #fff; }
+        .btn-danger:hover { background: #ff5c70; }
+        .btn-dark { background: #222230; border: 1px solid #444466; color: #fff; }
+        .btn-dark:hover { background: #333348; }
+
+        /* Поиск людей */
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+            max-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 14px;
+            background: #161622;
+            border: 1px solid #3d3d56;
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .search-input:focus {
+            border-color: #ff0055;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 110%;
+            left: 0; right: 0;
+            background: #181826;
+            border: 1px solid #3d3d56;
+            border-radius: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+            display: none;
+        }
+
+        .search-item {
+            padding: 10px 14px;
+            border-bottom: 1px solid #28283a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-item:hover { background: #222234; }
+
+        /* Сетка */
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 850px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: rgba(18, 18, 26, 0.92);
+            border: 2px solid #2e2e42;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 15px;
+            color: #00f0ff;
+            border-bottom: 1px solid #2e2e42;
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Аватарки */
+        .avatar-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #252538;
+            border: 2px solid #00f0ff;
+            object-fit: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .avatar-upload-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #252538;
+            border: 3px dashed #00f0ff;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+
+        .avatar-upload-circle:hover {
+            border-color: #ff0055;
+            opacity: 0.9;
+        }
+
+        .avatar-upload-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-upload-icon {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        .avatar-upload-circle:hover .avatar-upload-icon {
+            opacity: 1;
+        }
+
+        /* Список Топ-1000 */
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 750px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .leaderboard-list::-webkit-scrollbar { width: 6px; }
+        .leaderboard-list::-webkit-scrollbar-thumb {
+            background: #3d3d56;
+            border-radius: 4px;
+        }
+
+        .top-item {
+            display: flex;
+            align-items: center;
+            background: #14141f;
+            border: 1px solid #28283a;
+            border-radius: 10px;
+            padding: 10px 14px;
+            gap: 12px;
+        }
+
+        .rank {
+            font-size: 15px;
+            font-weight: 900;
+            min-width: 55px;
+            height: 35px;
+            background: #222232;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffe600;
+            border: 1px solid #383850;
+        }
+
+        .rank.top-1 { background: #ffd700; color: #000; }
+        .rank.top-2 { background: #c0c0c0; color: #000; }
+        .rank.top-3 { background: #cd7f32; color: #000; }
+
+        .item-info { flex-grow: 1; }
+
+        .item-nick {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .item-meta {
+            font-size: 11px;
+            color: #888;
+            margin-top: 3px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .item-meta a { color: #00f0ff; text-decoration: none; }
+        .item-meta a:hover { text-decoration: underline; }
+
+        .badge-creator {
+            background: #ff0055;
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+        }
+
+        /* Пагинация Топа */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #2e2e42;
+        }
+
+        /* Активные голосования */
+        .nomination-item {
+            background: #14141f;
+            border: 1px solid #28283a;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar-bg {
+            background: #252536;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #ff0055, #ffe600);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* Формы */
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 12px; color: #bbb; margin-bottom: 4px; }
+        .form-control {
+            width: 100%;
+            padding: 9px;
+            background: #12121c;
+            border: 1px solid #2e2e42;
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+            font-size: 13px;
+        }
+        .form-control:focus { border-color: #00f0ff; }
+
+        /* Модалки */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #161622;
+            border: 2px solid #2e2e42;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 480px;
+            padding: 22px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px; right: 15px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .admin-box {
+            background: rgba(255, 0, 85, 0.08);
+            border: 1px solid #ff0055;
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .ban-tab-btn {
+            padding: 6px 10px;
+            font-size: 11px;
+            background: #252536;
+            border: 1px solid #3d3d56;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .ban-tab-btn.active {
+            background: #ff0055;
+            border-color: #ff0055;
+        }
+
+        /* Футер */
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            padding: 15px 10px;
+            background: rgba(15, 15, 22, 0.9);
+            border: 1px solid #2e2e42;
+            border-radius: 12px;
+            color: #8888aa;
+            font-size: 13px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .stat-box {
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: #26263a;
+        }
+        .stat-box:hover {
+            background: #33334d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>💥 Топ Ремпагеров</h1>
+
+        <!-- Поиск Ремапгеров / Создателей -->
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Найти никнейм..." oninput="handleSearch()">
+            <div id="searchResults" class="search-results"></div>
+        </div>
+
+        <div class="user-nav" id="userNav"></div>
+    </header>
+
+    <div class="grid">
+        <!-- Главная страница: Топ 1 - 1000 -->
+        <div>
+            <div class="card">
+                <h2>
+                    <span>🏆 Топ Создателей и Ремпагеров</span>
+                    <span id="pageIndicator" style="font-size: 12px; color: #888;">Места: 1 - 50</span>
+                </h2>
+
+                <!-- Поиск по конкретному номеру места -->
+                <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                    <input type="number" id="jumpRankInput" class="search-input" placeholder="Перейти к месту (1-1000)" min="1" max="1000">
+                    <button class="btn btn-dark" onclick="jumpToRank()">Перейти</button>
+                </div>
+
+                <div class="leaderboard-list" id="leaderboard"></div>
+
+                <!-- Пагинация для 1000 мест -->
+                <div class="pagination">
+                    <button class="btn btn-dark" onclick="changePage(-1)">← Назад</button>
+                    <span id="pageNum" style="font-size: 13px; font-weight: bold;">Страница 1 из 20</span>
+                    <button class="btn btn-dark" onclick="changePage(1)">Вперед →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Сайдбар -->
+        <div>
+            <!-- Меню Создателя (Админка) -->
+            <div class="card admin-box" id="creatorPanel" style="display: none;">
+                <h2 style="color: #ff0055; border-color: #ff0055; margin-bottom: 10px;">👑 Меню Управления Создателя</h2>
+                
+                <!-- Вкладки управления -->
+                <div style="display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;">
+                    <button class="ban-tab-btn active" id="tabAddBtn" onclick="switchAdminTab('add')">Добавить</button>
+                    <button class="ban-tab-btn" id="tabRemoveBtn" onclick="switchAdminTab('remove')">Удалить из Топа</button>
+                    <button class="ban-tab-btn" id="tabBanBtn" onclick="switchAdminTab('ban')">Баны</button>
+                </div>
+
+                <!-- Форма добавления в топ 1-1000 -->
+                <div id="adminAddSection">
+                    <p style="font-size: 11px; color: #ffaaaa; margin-bottom: 8px;">Добавление любого никнейма на любое место (1–1000):</p>
+                    <div class="form-group">
+                        <label>Никнейм:</label>
+                        <input type="text" id="adminNickInput" class="form-control" placeholder="Никнейм создателя/ремпагера">
+                    </div>
+                    <div class="form-group">
+                        <label>Место в Топе (1 - 1000):</label>
+                        <input type="number" id="adminRankInput" class="form-control" min="1" max="1000" placeholder="Номер места (например, 1)">
+                    </div>
+                    <button class="btn btn-danger" style="width: 100%;" onclick="adminForceAdd()">Поставить в Топ</button>
+                </div>
+
+                <!-- Форма УДАЛЕНИЯ из Топа -->
+                <div id="adminRemoveSection" style="display: none;">
+                    <p style="font-size: 11px; color: #ffaaaa; margin-bottom: 8px;">Удаление участника из Топа:</p>
+                    <div class="form-group">
+                        <label>Удалить по номеру места (1-1000):</label>
+                        <input type="number" id="adminRemoveRankInput" class="form-control" min="1" max="1000" placeholder="Введите место">
+                    </div>
+                    <button class="btn btn-danger" style="width: 100%; margin-bottom: 10px;" onclick="adminRemoveByRank()">Удалить с места</button>
+                </div>
+
+                <!-- Форма Блокировок -->
+                <div id="adminBanSection" style="display: none;">
+                    <p style="font-size: 11px; color: #ffaaaa; margin-bottom: 8px;">Блокировка зарегистрированных пользователей:</p>
+                    <div class="form-group">
+                        <label>Выберите пользователя:</label>
+                        <select id="adminUserSelect" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Тип блокировки:</label>
+                        <select id="adminBanType" class="form-control">
+                            <option value="account">🚫 Бан аккаунта</option>
+                            <option value="ip">🌐 Бан по IP-адресу</option>
+                            <option value="device">📱 Бан по устройству (Device ID)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-danger" style="width: 100%;" onclick="adminBanUser()">Заблокировать</button>
+                </div>
+            </div>
+
+            <!-- Подача никнейма -->
+            <div class="card">
+                <h2>Номинировать Ремпагера</h2>
+                <div id="nominateFormArea"></div>
+            </div>
+
+            <!-- Активные голосования -->
+            <div class="card">
+                <h2>Идет Голосование (20 голосов)</h2>
+                <div id="nominationsList"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Внизу страницы -->
+<footer>
+    Сделано с поддержкой Подвала Чикаго и совместно с Karton820
+</footer>
+
+<!-- Скрытый инпут для загрузки аватара -->
+<input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+
+<!-- Модалка Входа/Регистрации -->
+<div class="modal" id="authModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+        <h2 style="margin-bottom: 15px; color: #ffe600;">Вход / Регистрация</h2>
+        
+        <div class="form-group">
+            <label>Уникальный Никнейм:</label>
+            <input type="text" id="authNick" class="form-control" placeholder="Ваш никнейм">
+        </div>
+        <div class="form-group">
+            <label>Пароль:</label>
+            <input type="password" id="authPass" class="form-control" placeholder="Пароль">
+        </div>
+
+        <button class="btn btn-yellow" style="width: 100%; margin-top: 10px;" onclick="handleAuth()">Войти / Зарегистрироваться</button>
+    </div>
+</div>
+
+<!-- Модалка Профиля и Подписок -->
+<div class="modal" id="profileModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeProfileModal()">&times;</span>
+        
+        <div id="profileAvatarContainer" style="text-align: center;">
+            <div class="avatar-upload-circle" id="profileAvatarCircle" onclick="triggerAvatarUpload()">
+                <img id="profileAvatarImg" src="" style="display:none;">
+                <span id="profileAvatarLetter" style="font-size: 28px; font-weight: bold; color: #00f0ff;">?</span>
+                <div class="avatar-upload-icon" id="profileAvatarHoverIcon">📷</div>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 15px; color: #00f0ff; text-align: center;" id="profileModalTitle">Мой Профиль</h2>
+
+        <!-- Статистика подписок (Клики для просмотра) -->
+        <div style="display: flex; gap: 10px; margin-bottom: 15px; justify-content: space-around; font-size: 13px;">
+            <div class="stat-box" onclick="showFollowersList()">Подписчиков: <strong id="followersCount" style="color:#ffe600;">0</strong></div>
+            <div class="stat-box" onclick="showFollowingList()">Подписок: <strong id="followingCount" style="color:#00f0ff;">0</strong></div>
+        </div>
+
+        <div id="selfProfileFields">
+            <div class="form-group">
+                <label>Ссылка на TikTok:</label>
+                <input type="text" id="profileTikTok" class="form-control" placeholder="https://www.tiktok.com/@username">
+            </div>
+
+            <div class="form-group">
+                <label>Ссылка на Viggle.ai:</label>
+                <input type="text" id="profileViggle" class="form-control" placeholder="https://viggle.ai/...">
+            </div>
+
+            <button class="btn" style="width: 100%; margin-top: 10px;" onclick="saveProfile()">Сохранить профиль</button>
+        </div>
+
+        <div id="otherProfileFields" style="display: none;">
+            <div id="otherLinksInfo" style="margin-bottom: 15px; font-size: 13px; color: #ccc;"></div>
+            <button class="btn btn-yellow" id="subscribeBtn" style="width: 100%;" onclick="toggleSubscribe()">Подписаться</button>
+        </div>
+    </div>
+</div>
+
+<!-- Модалка списка Подписчиков / Подписок -->
+<div class="modal" id="followListModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeFollowListModal()">&times;</span>
+        <h2 style="margin-bottom: 15px; color: #ffe600;" id="followListTitle">Список</h2>
+        <div id="followListItems" style="max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;"></div>
+    </div>
+</div>
+
+<script>
+    /* ===================================================
+       НАСТРОЙКА СОЗДАТЕЛЯ (АДМИНА)
+       =================================================== */
+    const CREATOR_NICKNAME = "KARTON820"; 
+
+    if (!localStorage.getItem('my_device_id')) {
+        localStorage.setItem('my_device_id', 'DEV_' + Math.random().toString(36).substring(2) + Date.now());
+    }
+    const MY_DEVICE_ID = localStorage.getItem('my_device_id');
+    const MY_SIMULATED_IP = "192.168.1." + (Math.floor(Math.random() * 200) + 10);
+
+    let currentPage = 1;
+    const PAGE_SIZE = 50;
+
+    function initStorage() {
+        if (!localStorage.getItem('users_db')) {
+            const initialUsers = {};
+            initialUsers[CREATOR_NICKNAME.toLowerCase()] = {
+                username: CREATOR_NICKNAME,
+                password: "adminpassword123",
+                tiktok: "",
+                viggle: "",
+                avatar: "",
+                isCreator: true,
+                postsToday: 0,
+                lastPostDate: new Date().toDateString(),
+                followers: [],
+                following: [],
+                ip: MY_SIMULATED_IP,
+                deviceId: MY_DEVICE_ID,
+                isBanned: false,
+                banType: null
+            };
+            localStorage.setItem('users_db', JSON.stringify(initialUsers));
+        }
+
+        if (!localStorage.getItem('leaderboard_db_1000')) {
+            const board1000 = Array(1000).fill(null);
+            localStorage.setItem('leaderboard_db_1000', JSON.stringify(board1000));
+        }
+
+        if (!localStorage.getItem('nominations_db')) {
+            localStorage.setItem('nominations_db', JSON.stringify([]));
+        }
+
+        if (!localStorage.getItem('banned_ips')) {
+            localStorage.setItem('banned_ips', JSON.stringify([]));
+        }
+
+        if (!localStorage.getItem('banned_devices')) {
+            localStorage.setItem('banned_devices', JSON.stringify([]));
+        }
+    }
+
+    initStorage();
+
+    let currentUser = JSON.parse(localStorage.getItem('current_user_session')) || null;
+    let viewedUserNick = null;
+
+    function getUsersDB() { return JSON.parse(localStorage.getItem('users_db')); }
+    function saveUsersDB(db) { localStorage.setItem('users_db', JSON.stringify(db)); }
+    function getBoardDB() { return JSON.parse(localStorage.getItem('leaderboard_db_1000')); }
+    function saveBoardDB(board) { localStorage.setItem('leaderboard_db_1000', JSON.stringify(board)); }
+    function getNomsDB() { return JSON.parse(localStorage.getItem('nominations_db')); }
+    function saveNomsDB(noms) { localStorage.setItem('nominations_db', JSON.stringify(noms)); }
+
+    function checkBans() {
+        const bannedIPs = JSON.parse(localStorage.getItem('banned_ips')) || [];
+        const bannedDevices = JSON.parse(localStorage.getItem('banned_devices')) || [];
+
+        if (bannedIPs.includes(MY_SIMULATED_IP)) {
+            document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20%;'>⛔ ДОСТУП ЗАБЛОКИРОВАН (БАН ПО IP)</h1>";
+            return true;
+        }
+
+        if (bannedDevices.includes(MY_DEVICE_ID)) {
+            document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20%;'>⛔ ДОСТУП ЗАБЛОКИРОВАН (БАН ПО УСТРОЙСТВУ)</h1>";
+            return true;
+        }
+
+        if (currentUser) {
+            const users = getUsersDB();
+            const u = users[currentUser.username.toLowerCase()];
+            if (u && u.isBanned) {
+                alert('Ваш аккаунт заблокирован Администратором!');
+                logout();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function updateNav() {
+        if (checkBans()) return;
+
+        const nav = document.getElementById('userNav');
+        const creatorPanel = document.getElementById('creatorPanel');
+        const nominateFormArea = document.getElementById('nominateFormArea');
+
+        if (currentUser) {
+            const isCreator = currentUser.username.toLowerCase() === CREATOR_NICKNAME.toLowerCase();
+            const avatarHtml = getAvatarHtml(currentUser.username, 32);
+
+            nav.innerHTML = `
+                ${avatarHtml}
+                <span style="font-weight: bold; color: #ffe600; font-size:13px;">
+                    ${currentUser.username} ${isCreator ? '<span class="badge-creator">СОЗДАТЕЛЬ</span>' : ''}
+                </span>
+                <button class="btn btn-yellow" onclick="openProfileModal('${currentUser.username}')">Мой Профиль</button>
+                <button class="btn btn-danger" onclick="logout()">Выйти</button>
+            `;
+
+            creatorPanel.style.display = isCreator ? 'block' : 'none';
+            if (isCreator) populateAdminUserSelect();
+
+            nominateFormArea.innerHTML = `
+                <div class="form-group">
+                    <label>Никнейм Создателя/Ремпагера:</label>
+                    <input type="text" id="nomTargetNick" class="form-control" placeholder="Введите никнейм">
+                </div>
+                <div class="form-group">
+                    <label>Место (1-1000):</label>
+                    <input type="number" id="nomTargetRank" class="form-control" min="1" max="1000" placeholder="Номер места">
+                </div>
+                <button class="btn" style="width: 100%;" onclick="submitNomination()">Отправить на голосование</button>
+                <p style="font-size: 11px; color: #aaa; margin-top: 6px;">Лимит на сегодня: ${getTodayPostsCount()}/10</p>
+            `;
+        } else {
+            nav.innerHTML = `<button class="btn btn-yellow" onclick="openAuthModal()">Войти / Регистрация</button>`;
+            creatorPanel.style.display = 'none';
+            nominateFormArea.innerHTML = `<p style="font-size: 12px; color: #aaa;">Зарегистрируйтесь, чтобы номинировать никнеймы и голосовать.</p>`;
+        }
+    }
+
+    function getAvatarHtml(username, size = 42) {
+        if (!username) return `<div class="avatar-circle" style="width:${size}px; height:${size}px;">?</div>`;
+        const users = getUsersDB();
+        const u = users[username.toLowerCase()];
+        
+        if (u && u.avatar) {
+            return `<img class="avatar-circle" src="${u.avatar}" style="width:${size}px; height:${size}px;">`;
+        } else {
+            const letter = username.charAt(0).toUpperCase();
+            return `<div class="avatar-circle" style="width:${size}px; height:${size}px;">${letter}</div>`;
+        }
+    }
+
+    function getTodayPostsCount() {
+        if (!currentUser) return 0;
+        const users = getUsersDB();
+        const user = users[currentUser.username.toLowerCase()];
+        const today = new Date().toDateString();
+
+        if (user.lastPostDate !== today) {
+            user.postsToday = 0;
+            user.lastPostDate = today;
+            saveUsersDB(users);
+        }
+        return user.postsToday || 0;
+    }
+
+    function handleAuth() {
+        const nick = document.getElementById('authNick').value.trim();
+        const pass = document.getElementById('authPass').value.trim();
+
+        if (!nick || !pass) { alert('Заполните все поля!'); return; }
+
+        const users = getUsersDB();
+        const nickKey = nick.toLowerCase();
+
+        if (nickKey === CREATOR_NICKNAME.toLowerCase() && users[nickKey] && users[nickKey].password !== pass) {
+            alert('Никнейм Создателя зарезервирован! Введите верный пароль.');
+            return;
+        }
+
+        if (users[nickKey]) {
+            if (users[nickKey].password === pass) {
+                if (users[nickKey].isBanned) { alert('Этот аккаунт заблокирован!'); return; }
+                currentUser = users[nickKey];
+                localStorage.setItem('current_user_session', JSON.stringify(currentUser));
+                closeAuthModal();
+                updateNav();
+                renderAll();
+            } else {
+                alert('Никнейм уже зарегистрирован другим человеком! Пароль неверный.');
+            }
+        } else {
+            const newUser = {
+                username: nick,
+                password: pass,
+                tiktok: "",
+                viggle: "",
+                avatar: "",
+                isCreator: (nickKey === CREATOR_NICKNAME.toLowerCase()),
+                postsToday: 0,
+                lastPostDate: new Date().toDateString(),
+                followers: [],
+                following: [],
+                ip: MY_SIMULATED_IP,
+                deviceId: MY_DEVICE_ID,
+                isBanned: false
+            };
+
+            users[nickKey] = newUser;
+            saveUsersDB(users);
+
+            currentUser = newUser;
+            localStorage.setItem('current_user_session', JSON.stringify(currentUser));
+            closeAuthModal();
+            updateNav();
+            renderAll();
+            alert('Аккаунт создан! Никнейм закреплен за вами.');
+        }
+    }
+
+    function logout() {
+        currentUser = null;
+        localStorage.removeItem('current_user_session');
+        updateNav();
+        renderAll();
+    }
+
+    function handleSearch() {
+        const query = document.getElementById('searchInput').value.trim().toLowerCase();
+        const resultsBox = document.getElementById('searchResults');
+
+        if (!query) {
+            resultsBox.style.display = 'none';
+            return;
+        }
+
+        const users = getUsersDB();
+        const matches = Object.keys(users).filter(k => k.includes(query));
+
+        if (matches.length === 0) {
+            resultsBox.innerHTML = '<div class="search-item" style="color:#aaa;">Ничего не найдено</div>';
+        } else {
+            resultsBox.innerHTML = matches.map(k => {
+                const u = users[k];
+                return `
+                    <div class="search-item">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            ${getAvatarHtml(u.username, 30)}
+                            <strong style="color:#fff;">${u.username}</strong>
+                        </div>
+                        <button class="btn btn-dark" style="padding:4px 10px; font-size:11px;" onclick="openProfileModal('${u.username}')">Профиль</button>
+                    </div>
+                `;
+            }).join('');
+        }
+        resultsBox.style.display = 'block';
+    }
+
+    function openProfileModal(targetNick) {
+        if (!targetNick) return;
+        document.getElementById('searchResults').style.display = 'none';
+        viewedUserNick = targetNick;
+        const users = getUsersDB();
+        const targetUser = users[targetNick.toLowerCase()];
+
+        if (!targetUser) return;
+
+        document.getElementById('profileModalTitle').innerText = targetUser.username;
+        document.getElementById('followersCount').innerText = (targetUser.followers || []).length;
+        document.getElementById('followingCount').innerText = (targetUser.following || []).length;
+
+        // Настройка аватара
+        const avatarImg = document.getElementById('profileAvatarImg');
+        const avatarLetter = document.getElementById('profileAvatarLetter');
+        const hoverIcon = document.getElementById('profileAvatarHoverIcon');
+
+        if (targetUser.avatar) {
+            avatarImg.src = targetUser.avatar;
+            avatarImg.style.display = 'block';
+            avatarLetter.style.display = 'none';
+        } else {
+            avatarImg.style.display = 'none';
+            avatarLetter.style.display = 'block';
+            avatarLetter.innerText = targetUser.username.charAt(0).toUpperCase();
+        }
+
+        const isSelf = currentUser && currentUser.username.toLowerCase() === targetNick.toLowerCase();
+
+        if (isSelf) {
+            hoverIcon.style.display = 'flex';
+            document.getElementById('profileAvatarCircle').style.cursor = 'pointer';
+            document.getElementById('selfProfileFields').style.display = 'block';
+            document.getElementById('otherProfileFields').style.display = 'none';
+            document.getElementById('profileTikTok').value = targetUser.tiktok || '';
+            document.getElementById('profileViggle').value = targetUser.viggle || '';
+        } else {
+            hoverIcon.style.display = 'none';
+            document.getElementById('profileAvatarCircle').style.cursor = 'default';
+            document.getElementById('selfProfileFields').style.display = 'none';
+            document.getElementById('otherProfileFields').style.display = 'block';
+
+            let links = [];
+            if (targetUser.tiktok) links.push(`<a href="${targetUser.tiktok}" target="_blank" style="color:#00f0ff;">TikTok</a>`);
+            if (targetUser.viggle) links.push(`<a href="${targetUser.viggle}" target="_blank" style="color:#00f0ff;">Viggle.ai</a>`);
+
+            document.getElementById('otherLinksInfo').innerHTML = links.length > 0 ? 'Ссылки: ' + links.join(' • ') : 'Пользователь не указал ссылки.';
+
+            const subBtn = document.getElementById('subscribeBtn');
+            if (currentUser) {
+                const myUser = users[currentUser.username.toLowerCase()];
+                const isSubbed = (myUser.following || []).includes(targetNick.toLowerCase());
+                subBtn.innerText = isSubbed ? 'Отписаться' : 'Подписаться';
+                subBtn.className = isSubbed ? 'btn btn-danger' : 'btn btn-yellow';
+            } else {
+                subBtn.innerText = 'Войдите, чтобы подписаться';
+                subBtn.className = 'btn btn-dark';
+            }
+        }
+
+        document.getElementById('profileModal').style.display = 'flex';
+    }
+
+    function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
+
+    // Аватарки загрузка
+    function triggerAvatarUpload() {
+        if (currentUser && viewedUserNick && currentUser.username.toLowerCase() === viewedUserNick.toLowerCase()) {
+            document.getElementById('avatarFileInput').click();
+        }
+    }
+
+    function handleAvatarUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (file.size > 2 * 1024 * 1024) {
+            alert('Файл слишком большой! Выберите картинку до 2 МБ.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const base64Image = e.target.result;
+            const users = getUsersDB();
+            const userKey = currentUser.username.toLowerCase();
+            
+            users[userKey].avatar = base64Image;
+            saveUsersDB(users);
+
+            currentUser.avatar = base64Image;
+            localStorage.setItem('current_user_session', JSON.stringify(currentUser));
+
+            openProfileModal(currentUser.username);
+            updateNav();
+            renderAll();
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Просмотр подписок и подписчиков у любых людей
+    function showFollowersList() {
+        if (!viewedUserNick) return;
+        const users = getUsersDB();
+        const targetUser = users[viewedUserNick.toLowerCase()];
+        if (!targetUser) return;
+
+        const followers = targetUser.followers || [];
+        renderFollowList(`Подписчики (${followers.length})`, followers);
+    }
+
+    function showFollowingList() {
+        if (!viewedUserNick) return;
+        const users = getUsersDB();
+        const targetUser = users[viewedUserNick.toLowerCase()];
+        if (!targetUser) return;
+
+        const following = targetUser.following || [];
+        renderFollowList(`Подписки (${following.length})`, following);
+    }
+
+    function renderFollowList(title, nickArray) {
+        document.getElementById('followListTitle').innerText = title;
+        const container = document.getElementById('followListItems');
+        container.innerHTML = '';
+
+        if (nickArray.length === 0) {
+            container.innerHTML = '<p style="color:#aaa; font-size:12px;">Список пуст</p>';
+        } else {
+            const users = getUsersDB();
+            nickArray.forEach(nickKey => {
+                const u = users[nickKey];
+                const displayName = u ? u.username : nickKey;
+                container.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#1c1c2b; padding:8px 12px; border-radius:8px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            ${getAvatarHtml(displayName, 30)}
+                            <span>${displayName}</span>
+                        </div>
+                        <button class="btn btn-dark" style="padding:3px 8px; font-size:11px;" onclick="closeFollowListModal(); openProfileModal('${displayName}');">Профиль</button>
+                    </div>
+                `;
+            });
+        }
+        document.getElementById('followListModal').style.display = 'flex';
+    }
+
+    function closeFollowListModal() {
+        document.getElementById('followListModal').style.display = 'none';
+    }
+
+    function toggleSubscribe() {
+        if (!currentUser) { alert('Войдите в аккаунт!'); return; }
+        if (!viewedUserNick) return;
+
+        const users = getUsersDB();
+        const myKey = currentUser.username.toLowerCase();
+        const targetKey = viewedUserNick.toLowerCase();
+
+        if (myKey === targetKey) return;
+
+        const myUser = users[myKey];
+        const targetUser = users[targetKey];
+
+        if (!myUser.following) myUser.following = [];
+        if (!targetUser.followers) targetUser.followers = [];
+
+        const subIndex = myUser.following.indexOf(targetKey);
+
+        if (subIndex > -1) {
+            myUser.following.splice(subIndex, 1);
+            const followerIndex = targetUser.followers.indexOf(myKey);
+            if (followerIndex > -1) targetUser.followers.splice(followerIndex, 1);
+        } else {
+            myUser.following.push(targetKey);
+            targetUser.followers.push(myKey);
+        }
+
+        saveUsersDB(users);
+        currentUser = myUser;
+        localStorage.setItem('current_user_session', JSON.stringify(currentUser));
+        openProfileModal(targetUser.username);
+    }
+
+    function saveProfile() {
+        if (!currentUser) return;
+        const users = getUsersDB();
+        const user = users[currentUser.username.toLowerCase()];
+
+        user.tiktok = document.getElementById('profileTikTok').value.trim();
+        user.viggle = document.getElementById('profileViggle').value.trim();
+
+        saveUsersDB(users);
+        currentUser = user;
+        localStorage.setItem('current_user_session', JSON.stringify(currentUser));
+        closeProfileModal();
+        renderAll();
+        alert('Профиль сохранен!');
+    }
+
+    function submitNomination() {
+        if (!currentUser) return;
+        if (getTodayPostsCount() >= 10) { alert('Исчерпан лимит 10 постов в день!'); return; }
+
+        const targetNick = document.getElementById('nomTargetNick').value.trim();
+        const rank = parseInt(document.getElementById('nomTargetRank').value);
+
+        if (!targetNick || isNaN(rank) || rank < 1 || rank > 1000) {
+            alert('Укажите ник и место от 1 до 1000.');
+            return;
+        }
+
+        const noms = getNomsDB();
+        noms.push({ id: Date.now(), targetNick: targetNick, rank: rank, votes: [], createdBy: currentUser.username });
+        saveNomsDB(noms);
+
+        const users = getUsersDB();
+        users[currentUser.username.toLowerCase()].postsToday = getTodayPostsCount() + 1;
+        saveUsersDB(users);
+
+        document.getElementById('nomTargetNick').value = '';
+        updateNav();
+        renderNominations();
+        alert('Никнейм отправлен на голосование!');
+    }
+
+    function voteNomination(nomId) {
+        if (!currentUser) { alert('Зарегистрируйтесь!'); return; }
+
+        const noms = getNomsDB();
+        const nom = noms.find(n => n.id === nomId);
+        if (!nom) return;
+
+        const userKey = currentUser.username.toLowerCase();
+        if (nom.votes.includes(userKey)) { alert('Вы уже голосовали!'); return; }
+
+        nom.votes.push(userKey);
+
+        if (nom.votes.length >= 20) {
+            const board = getBoardDB();
+            board[nom.rank - 1] = { username: nom.targetNick, addedBy: 'Голосование (20 голосов)' };
+            saveBoardDB(board);
+
+            const updatedNoms = noms.filter(n => n.id !== nomId);
+            saveNomsDB(updatedNoms);
+            alert('🎉 Никнейм ' + nom.targetNick + ' набрал 20 голосов и занял место #' + nom.rank + '!');
+        } else {
+            saveNomsDB(noms);
+        }
+
+        renderAll();
+    }
+
+    /* ===================================================
+       ФУНКЦИИ СОЗДАТЕЛЯ (АДМИНА)
+       =================================================== */
+    function switchAdminTab(tab) {
+        document.getElementById('adminAddSection').style.display = tab === 'add' ? 'block' : 'none';
+        document.getElementById('adminRemoveSection').style.display = tab === 'remove' ? 'block' : 'none';
+        document.getElementById('adminBanSection').style.display = tab === 'ban' ? 'block' : 'none';
+
+        document.getElementById('tabAddBtn').classList.toggle('active', tab === 'add');
+        document.getElementById('tabRemoveBtn').classList.toggle('active', tab === 'remove');
+        document.getElementById('tabBanBtn').classList.toggle('active', tab === 'ban');
+    }
+
+    function populateAdminUserSelect() {
+        const users = getUsersDB();
+        const select = document.getElementById('adminUserSelect');
+        select.innerHTML = '';
+        Object.keys(users).forEach(k => {
+            if (k !== CREATOR_NICKNAME.toLowerCase()) {
+                select.innerHTML += `<option value="${users[k].username}">${users[k].username}</option>`;
+            }
+        });
+    }
+
+    function adminForceAdd() {
+        if (!currentUser || currentUser.username.toLowerCase() !== CREATOR_NICKNAME.toLowerCase()) return;
+
+        const nick = document.getElementById('adminNickInput').value.trim();
+        const rank = parseInt(document.getElementById('adminRankInput').value);
+
+        if (!nick || isNaN(rank) || rank < 1 || rank > 1000) {
+            alert('Введите корректный ник и место (1-1000).');
+            return;
+        }
+
+        const board = getBoardDB();
+        board[rank - 1] = { username: nick, addedBy: 'Добавлено Создателем 👑' };
+        saveBoardDB(board);
+
+        document.getElementById('adminNickInput').value = '';
+        renderBoard();
+        alert('Никнейм ' + nick + ' добавлен на место #' + rank + '!');
+    }
+
+    // Удаление из Топа по номеру места (Функция создателя)
+    function adminRemoveByRank(rankNum) {
+        if (!currentUser || currentUser.username.toLowerCase() !== CREATOR_NICKNAME.toLowerCase()) return;
+
+        const rank = rankNum || parseInt(document.getElementById('adminRemoveRankInput').value);
+
+        if (isNaN(rank) || rank < 1 || rank > 1000) {
+            alert('Укажите корректный номер места (1-1000).');
+            return;
+        }
+
+        const board = getBoardDB();
+        if (!board[rank - 1]) {
+            alert('На месте #' + rank + ' никого нет!');
+            return;
+        }
+
+        const removedName = board[rank - 1].username;
+        board[rank - 1] = null;
+        saveBoardDB(board);
+
+        if (document.getElementById('adminRemoveRankInput')) document.getElementById('adminRemoveRankInput').value = '';
+        renderBoard();
+        alert(`Пользователь ${removedName} удален с места #${rank}!`);
+    }
+
+    function adminBanUser() {
+        if (!currentUser || currentUser.username.toLowerCase() !== CREATOR_NICKNAME.toLowerCase()) return;
+
+        const targetNick = document.getElementById('adminUserSelect').value;
+        const banType = document.getElementById('adminBanType').value;
+
+        if (!targetNick) return;
+
+        const users = getUsersDB();
+        const uKey = targetNick.toLowerCase();
+        const u = users[uKey];
+
+        if (!u) return;
+
+        if (banType === 'account') {
+            u.isBanned = true;
+            saveUsersDB(users);
+            alert('Пользователь ' + targetNick + ' забанен по аккаунту!');
+        } else if (banType === 'ip') {
+            const ips = JSON.parse(localStorage.getItem('banned_ips')) || [];
+            if (!ips.includes(u.ip)) ips.push(u.ip);
+            localStorage.setItem('banned_ips', JSON.stringify(ips));
+            u.isBanned = true;
+            saveUsersDB(users);
+            alert('Пользователь ' + targetNick + ' и его IP заблокированы!');
+        } else if (banType === 'device') {
+            const devs = JSON.parse(localStorage.getItem('banned_devices')) || [];
+            if (!devs.includes(u.deviceId)) devs.push(u.deviceId);
+            localStorage.setItem('banned_devices', JSON.stringify(devs));
+            u.isBanned = true;
+            saveUsersDB(users);
+            alert('Пользователь ' + targetNick + ' и его Устройство заблокированы!');
+        }
+
+        renderAll();
+    }
+
+    // Отображение Топа 1-1000 с Аватарками и кнопкой Удаления
+    function renderBoard() {
+        const board = getBoardDB();
+        const users = getUsersDB();
+        const list = document.getElementById('leaderboard');
+        list.innerHTML = '';
+
+        const isCreator = currentUser && currentUser.username.toLowerCase() === CREATOR_NICKNAME.toLowerCase();
+
+        const startIdx = (currentPage - 1) * PAGE_SIZE;
+        const endIdx = startIdx + PAGE_SIZE;
+        const pageItems = board.slice(startIdx, endIdx);
+
+        document.getElementById('pageIndicator').innerText = `Места: ${startIdx + 1} - ${endIdx}`;
+        document.getElementById('pageNum').innerText = `Страница ${currentPage} из ${Math.ceil(1000 / PAGE_SIZE)}`;
+
+        pageItems.forEach((item, index) => {
+            const rankNum = startIdx + index + 1;
+            let rankClass = 'rank';
+            if (rankNum === 1) rankClass += ' top-1';
+            if (rankNum === 2) rankClass += ' top-2';
+            if (rankNum === 3) rankClass += ' top-3';
+
+            let metaHTML = '';
+            let nickName = '<span style="color: #555; font-style: italic;">Свободное место</span>';
+            let avatarHtml = `<div class="avatar-circle" style="opacity: 0.3;">?</div>`;
+            let removeBtnHtml = '';
+
+            if (item) {
+                nickName = item.username;
+                avatarHtml = getAvatarHtml(item.username, 42);
+                const userData = users[item.username.toLowerCase()];
+
+                let links = [];
+                if (userData) {
+                    if (userData.tiktok) links.push(`<a href="${userData.tiktok}" target="_blank">TikTok</a>`);
+                    if (userData.viggle) links.push(`<a href="${userData.viggle}" target="_blank">Viggle.ai</a>`);
+                }
+
+                metaHTML = `
+                    <div class="item-meta">
+                        <span>Статус: ${item.addedBy}</span>
+                        ${links.length > 0 ? '| ' + links.join(' • ') : ''}
+                    </div>
+                `;
+
+                if (isCreator) {
+                    removeBtnHtml = `<button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px;" title="Удалить из топа" onclick="adminRemoveByRank(${rankNum})">❌</button>`;
+                }
+            }
+
+            list.innerHTML += `
+                <div class="top-item">
+                    <div class="${rankClass}">#${rankNum}</div>
+                    ${avatarHtml}
+                    <div class="item-info">
+                        <div class="item-nick" style="cursor:pointer;" onclick="${item ? `openProfileModal('${item.username}')` : ''}">${nickName}</div>
+                        ${metaHTML}
+                    </div>
+                    ${removeBtnHtml}
+                </div>
+            `;
+        });
+    }
+
+    function changePage(delta) {
+        const totalPages = Math.ceil(1000 / PAGE_SIZE);
+        currentPage += delta;
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        renderBoard();
+    }
+
+    function jumpToRank() {
+        const rank = parseInt(document.getElementById('jumpRankInput').value);
+        if (isNaN(rank) || rank < 1 || rank > 1000) return;
+        currentPage = Math.ceil(rank / PAGE_SIZE);
+        renderBoard();
+    }
+
+    function renderNominations() {
+        const noms = getNomsDB();
+        const container = document.getElementById('nominationsList');
+        container.innerHTML = '';
+
+        if (noms.length === 0) {
+            container.innerHTML = '<p style="font-size: 12px; color: #777;">Нет активных номинаций.</p>';
+            return;
+        }
+
+        noms.forEach(nom => {
+            const votesCount = nom.votes.length;
+            const progress = (votesCount / 20) * 100;
+
+            container.innerHTML += `
+                <div class="nomination-item">
+                    <div style="display:flex; justify-content:space-between; font-size:13px;">
+                        <strong>${nom.targetNick}</strong>
+                        <span style="color: #ffe600;">на #${nom.rank} место</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: ${progress}%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 11px; color: #aaa;">Голосов: ${votesCount} / 20</span>
+                        <button class="btn btn-yellow" style="padding: 4px 10px; font-size: 11px;" onclick="voteNomination(${nom.id})">Голосовать</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function renderAll() {
+        renderBoard();
+        renderNominations();
+    }
+
+    function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
+    function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
+
+    updateNav();
+    renderAll();
+</script>
+</body>
+</html>
