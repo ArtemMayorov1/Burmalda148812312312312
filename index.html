@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<!-- Подключение SDK Firebase (версия Compat для JS) -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDnRxurDp_Qd-hpNT5A_TCGUqKuftsO418",
+  authDomain: "rampagekarton.firebaseapp.com",
+  databaseURL: "https://rampagekarton-default-rtdb.firebaseio.com",
+  projectId: "rampagekarton",
+  storageBucket: "rampagekarton.firebasestorage.app",
+  messagingSenderId: "103789012874",
+  appId: "1:103789012874:web:8c52ed7b7681d174d20a73",
+  measurementId: "G-J82HZ47LQH"
+};
+
+// Инициализация Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Топ Создателей и Ремпагеров (1-1000)</title>
@@ -734,7 +754,6 @@
             gap: 12px;
         }
 
-        /* --- КРАСНО-ЧЕРНАЯ ОБВОДКА И СТИЛИ КОТИКА --- */
         .cat-container {
             display: inline-block;
             cursor: pointer;
@@ -799,111 +818,34 @@
         }
         .visitor-item:last-child { border-bottom: none; }
 
-        /* --- ОПТИМИЗАЦИЯ ДЛЯ ТЕЛЕФОНОВ (МОБИЛЬНАЯ ВЕРСИЯ) --- */
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-
-            header {
-                padding: 12px 15px;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-            }
-
-            header h1 {
-                font-size: 18px;
-                justify-content: center;
-            }
-
-            .search-box {
-                max-width: 100%;
-                width: 100%;
-            }
-
-            .user-nav {
-                justify-content: center;
-                gap: 8px;
-                width: 100%;
-            }
-
-            .user-nav .btn {
-                flex-grow: 1;
-                font-size: 12px;
-                padding: 8px 10px;
-            }
-
-            .card {
-                padding: 14px;
-                border-radius: 12px;
-            }
-
-            .card h2 {
-                font-size: 16px;
-            }
-
-            .top-item {
-                padding: 8px 10px;
-                gap: 8px;
-            }
-
-            .rank {
-                min-width: 45px;
-                height: 30px;
-                font-size: 13px;
-            }
-
-            .avatar-circle {
-                width: 36px;
-                height: 36px;
-                font-size: 14px;
-            }
-
-            .item-nick {
-                font-size: 14px;
-            }
-
-            .pagination {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .pagination button {
-                width: 100%;
-            }
-
-            .modal-content {
-                width: 95%;
-                padding: 16px;
-                border-radius: 14px;
-            }
-
-            #toast-container {
-                left: 15px;
-                right: 15px;
-                bottom: 15px;
-            }
-
-            .toast {
-                min-width: 100%;
-                max-width: 100%;
-            }
+            body { padding: 10px; }
+            header { padding: 12px 15px; flex-direction: column; align-items: stretch; gap: 12px; }
+            header h1 { font-size: 18px; justify-content: center; }
+            .search-box { max-width: 100%; width: 100%; }
+            .user-nav { justify-content: center; gap: 8px; width: 100%; }
+            .user-nav .btn { flex-grow: 1; font-size: 12px; padding: 8px 10px; }
+            .card { padding: 14px; border-radius: 12px; }
+            .card h2 { font-size: 16px; }
+            .top-item { padding: 8px 10px; gap: 8px; }
+            .rank { min-width: 45px; height: 30px; font-size: 13px; }
+            .avatar-circle { width: 36px; height: 36px; font-size: 14px; }
+            .item-nick { font-size: 14px; }
+            .pagination { flex-direction: column; gap: 10px; }
+            .pagination button { width: 100%; }
+            .modal-content { width: 95%; padding: 16px; border-radius: 14px; }
+            #toast-container { left: 15px; right: 15px; bottom: 15px; }
+            .toast { min-width: 100%; max-width: 100%; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            *, body, .top-item, .toast, .modal, .modal-content {
-                animation: none !important;
-                transition: none !important;
-            }
+            *, body, .top-item, .toast, .modal, .modal-content { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
 <body>
 
-<!-- Аудиофайл фоновой музыки -->
 <audio id="bgAudio" loop src="burmalda.mp3"></audio>
-<!-- Аудиофайл для кота -->
 <audio id="catAudio" src="cat2.mp3"></audio>
 
 <div id="toast-container"></div>
@@ -1002,7 +944,6 @@
                     <div id="adminSupportTicketsList"></div>
                 </div>
 
-                <!-- Кнопка обновления сервера для всех пользователей -->
                 <button class="btn btn-yellow" style="width: 100%; margin-top: 12px;" onclick="adminBroadcastUpdate()">🔄 Обновить сервер для всех</button>
             </div>
 
@@ -1028,13 +969,10 @@
 
 <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
 
-<!-- Модалка НАСТРОЕК (Тема, Язык, Музыка) -->
 <div class="modal" id="settingsModal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeSettingsModal()">&times;</span>
-        <h2 style="margin-bottom: 15px; color: var(--accent-cyan);" id="settingsModalTitle">
-            Настройки
-        </h2>
+        <h2 style="margin-bottom: 15px; color: var(--accent-cyan);" id="settingsModalTitle">Настройки</h2>
         
         <div class="form-group">
             <label id="lblTheme">Тема оформления:</label>
@@ -1056,7 +994,6 @@
     </div>
 </div>
 
-<!-- Модалка Входа/Регистрации -->
 <div class="modal" id="authModal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeAuthModal()">&times;</span>
@@ -1077,7 +1014,6 @@
     </div>
 </div>
 
-<!-- Модалка МЕНЕДЖЕРА АККАУНТОВ -->
 <div class="modal" id="accountsModal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeAccountsModal()">&times;</span>
@@ -1090,7 +1026,6 @@
     </div>
 </div>
 
-<!-- Модалка СЛУЖБЫ ПОДДЕРЖКИ -->
 <div class="modal" id="supportModal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeSupportModal()">&times;</span>
@@ -1108,7 +1043,6 @@
     </div>
 </div>
 
-<!-- Модалка Профиля, Подписок и Гостей -->
 <div class="modal" id="profileModal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeProfileModal()">&times;</span>
@@ -1129,7 +1063,6 @@
             <div class="stat-box" id="visitorsStatBox" onclick="toggleVisitorsList()"><span id="lblVisitors">Гости</span>: <strong id="visitorsCount" style="color:#ff0055;">0</strong></div>
         </div>
 
-        <!-- Список гостей профиля (ВИДЕН ТОЛЬКО ВЛАДЕЛЬЦУ) -->
         <div id="visitorsSection" style="display:none; margin-bottom: 15px;">
             <h4 style="font-size: 13px; color: var(--accent-pink);" id="lblVisitorsTitle">👀 Кто заходил на профиль:</h4>
             <div class="visitors-list" id="visitorsList"></div>
@@ -1156,7 +1089,6 @@
     </div>
 </div>
 
-<!-- Модалка списка Подписчиков / Подписок -->
 <div class="modal" id="followListModal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeFollowListModal()">&times;</span>
@@ -1166,7 +1098,6 @@
 </div>
 
 <script>
-    /* Кастомные SVG-иконки */
     const SVG_ICONS = {
         support: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>`,
         account: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`,
@@ -1181,7 +1112,6 @@
     let currentTheme = localStorage.getItem('site_theme') || 'dark';
     let musicPlaying = false;
 
-    /* Автозапуск музыки при загрузке страницы */
     window.addEventListener('DOMContentLoaded', () => {
         const audio = document.getElementById('bgAudio');
         audio.currentTime = 0;
@@ -1413,7 +1343,6 @@
         applyTheme();
     }
 
-    /* Управление Музыкой */
     function toggleMusic() {
         const audio = document.getElementById('bgAudio');
         const btn = document.getElementById('musicToggleBtn');
@@ -1443,7 +1372,6 @@
     function openSettingsModal() { openModal('settingsModal'); }
     function closeSettingsModal() { closeModal('settingsModal'); }
 
-    /* Custom Toast Notifications */
     function showToast(message, type = 'info') {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
@@ -1476,7 +1404,7 @@
 
     function getBadgeHtml(username) {
         if (!username) return '';
-        const users = getUsersDB();
+        const users = globalUsersDB;
         const u = users[username.toLowerCase()];
         const isCreator = username.toLowerCase() === CREATOR_NICKNAME.toLowerCase();
         
@@ -1502,8 +1430,7 @@
         }
     }
 
-    /* Настройка создателя и БД */
-    const CREATOR_NICKNAME = "LARPTON"; 
+    const CREATOR_NICKNAME = "KARTON820"; 
 
     if (!localStorage.getItem('my_device_id')) {
         localStorage.setItem('my_device_id', 'DEV_' + Math.random().toString(36).substring(2) + Date.now());
@@ -1514,94 +1441,113 @@
     let currentPage = 1;
     const PAGE_SIZE = 50;
 
-    function initStorage() {
-        if (!localStorage.getItem('users_db')) {
-            const initialUsers = {};
-            initialUsers[CREATOR_NICKNAME.toLowerCase()] = {
-                username: CREATOR_NICKNAME,
-                password: "adminpassword123",
-                tiktok: "",
-                viggle: "",
-                avatar: "",
-                isCreator: true,
-                isPartner: true,
-                postsToday: 0,
-                lastPostDate: new Date().toDateString(),
-                followers: [],
-                following: [],
-                visitors: [],
-                ip: MY_SIMULATED_IP,
-                deviceId: MY_DEVICE_ID,
-                isBanned: false,
-                banType: null
-            };
-            localStorage.setItem('users_db', JSON.stringify(initialUsers));
-        }
+    let globalUsersDB = {};
+    let globalLeaderboardDB = Array(1000).fill(null);
+    let globalNominationsDB = [];
+    let globalTicketsDB = [];
 
-        if (!localStorage.getItem('leaderboard_db_1000')) {
-            const board1000 = Array(1000).fill(null);
-            localStorage.setItem('leaderboard_db_1000', JSON.stringify(board1000));
-        }
+    // Подключение Firestore Realtime Слушателей
+    function setupFirebaseListeners() {
+        // 1. Синхронизация аккаунтов пользователей
+        db.collection('app_data').doc('users_db').onSnapshot(doc => {
+            if (doc.exists) {
+                globalUsersDB = doc.data();
+            } else {
+                const initialUsers = {};
+                initialUsers[CREATOR_NICKNAME.toLowerCase()] = {
+                    username: CREATOR_NICKNAME,
+                    password: "adminpassword123",
+                    tiktok: "",
+                    viggle: "",
+                    avatar: "",
+                    isCreator: true,
+                    isPartner: true,
+                    postsToday: 0,
+                    lastPostDate: new Date().toDateString(),
+                    followers: [],
+                    following: [],
+                    visitors: [],
+                    ip: MY_SIMULATED_IP,
+                    deviceId: MY_DEVICE_ID,
+                    isBanned: false,
+                    banType: null
+                };
+                db.collection('app_data').doc('users_db').set(initialUsers);
+                globalUsersDB = initialUsers;
+            }
+            if (currentUser && globalUsersDB[currentUser.username.toLowerCase()]) {
+                currentUser = globalUsersDB[currentUser.username.toLowerCase()];
+            }
+            updateNav();
+            renderBoard();
+        });
 
-        if (!localStorage.getItem('nominations_db')) {
-            localStorage.setItem('nominations_db', JSON.stringify([]));
-        }
+        // 2. Синхронизация Топ-1000
+        db.collection('app_data').doc('leaderboard').onSnapshot(doc => {
+            if (doc.exists) {
+                globalLeaderboardDB = JSON.parse(doc.data().data || "[]");
+            } else {
+                const emptyBoard = Array(1000).fill(null);
+                db.collection('app_data').doc('leaderboard').set({ data: JSON.stringify(emptyBoard) });
+                globalLeaderboardDB = emptyBoard;
+            }
+            renderBoard();
+        });
 
-        if (!localStorage.getItem('banned_ips')) {
-            localStorage.setItem('banned_ips', JSON.stringify([]));
-        }
+        // 3. Синхронизация Номинаций и Голосования
+        db.collection('app_data').doc('nominations').onSnapshot(doc => {
+            if (doc.exists) {
+                globalNominationsDB = doc.data().list || [];
+            } else {
+                db.collection('app_data').doc('nominations').set({ list: [] });
+                globalNominationsDB = [];
+            }
+            renderNominations();
+        });
 
-        if (!localStorage.getItem('banned_devices')) {
-            localStorage.setItem('banned_devices', JSON.stringify([]));
-        }
-
-        if (!localStorage.getItem('saved_accounts')) {
-            localStorage.setItem('saved_accounts', JSON.stringify([]));
-        }
-
-        if (!localStorage.getItem('support_tickets')) {
-            localStorage.setItem('support_tickets', JSON.stringify([]));
-        }
+        // 4. Синхронизация Обращений в поддержке
+        db.collection('app_data').doc('tickets').onSnapshot(doc => {
+            if (doc.exists) {
+                globalTicketsDB = doc.data().list || [];
+            } else {
+                db.collection('app_data').doc('tickets').set({ list: [] });
+                globalTicketsDB = [];
+            }
+            if (currentUser) {
+                renderUserSupportTickets();
+                if (currentUser.username.toLowerCase() === CREATOR_NICKNAME.toLowerCase()) {
+                    renderAdminSupportTickets();
+                }
+            }
+        });
     }
 
-    initStorage();
+    setupFirebaseListeners();
 
     let currentUser = JSON.parse(localStorage.getItem('current_user_session')) || null;
     let viewedUserNick = null;
 
-    function getUsersDB() { return JSON.parse(localStorage.getItem('users_db')); }
-    function saveUsersDB(db) { localStorage.setItem('users_db', JSON.stringify(db)); }
-    function getBoardDB() { return JSON.parse(localStorage.getItem('leaderboard_db_1000')); }
-    function saveBoardDB(board) { localStorage.setItem('leaderboard_db_1000', JSON.stringify(board)); }
-    function getNomsDB() { return JSON.parse(localStorage.getItem('nominations_db')); }
-    function saveNomsDB(noms) { localStorage.setItem('nominations_db', JSON.stringify(noms)); }
+    function getUsersDB() { return globalUsersDB; }
+    function saveUsersDB(users) { db.collection('app_data').doc('users_db').set(users); }
+    function getBoardDB() { return globalLeaderboardDB; }
+    function saveBoardDB(board) { db.collection('app_data').doc('leaderboard').set({ data: JSON.stringify(board) }); }
+    function getNomsDB() { return globalNominationsDB; }
+    function saveNomsDB(noms) { db.collection('app_data').doc('nominations').set({ list: noms }); }
     function getSavedAccounts() { return JSON.parse(localStorage.getItem('saved_accounts')) || []; }
     function saveSavedAccounts(accs) { localStorage.setItem('saved_accounts', JSON.stringify(accs)); }
-    function getTicketsDB() { return JSON.parse(localStorage.getItem('support_tickets')) || []; }
-    function saveTicketsDB(t) { localStorage.setItem('support_tickets', JSON.stringify(t)); }
+    function getTicketsDB() { return globalTicketsDB; }
+    function saveTicketsDB(tickets) { db.collection('app_data').doc('tickets').set({ list: tickets }); }
 
-    /* Создатель передает глобальное обновление всем клиентам */
     function adminBroadcastUpdate() {
         if (!currentUser || currentUser.username.toLowerCase() !== CREATOR_NICKNAME.toLowerCase()) return;
-        localStorage.setItem('server_force_update', Date.now());
-        showToast('Сервер и данные обновлены для всех участников!', 'success');
-        renderAll();
+        saveUsersDB(globalUsersDB);
+        saveBoardDB(globalLeaderboardDB);
+        saveNomsDB(globalNominationsDB);
+        saveTicketsDB(globalTicketsDB);
+        showToast('Сервер и данные успешно синхронизированы для всех!', 'success');
     }
 
     function checkBans() {
-        const bannedIPs = JSON.parse(localStorage.getItem('banned_ips')) || [];
-        const bannedDevices = JSON.parse(localStorage.getItem('banned_devices')) || [];
-
-        if (bannedIPs.includes(MY_SIMULATED_IP)) {
-            document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20%;'>⛔ ДОСТУП ЗАБЛОКИРОВАН (БАН ПО IP)</h1>";
-            return true;
-        }
-
-        if (bannedDevices.includes(MY_DEVICE_ID)) {
-            document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20%;'>⛔ ДОСТУП ЗАБЛОКИРОВАН (БАН ПО УСТРОЙСТВУ)</h1>";
-            return true;
-        }
-
         if (currentUser) {
             const users = getUsersDB();
             const u = users[currentUser.username.toLowerCase()];
@@ -1749,7 +1695,6 @@
 
             if (nickKey !== creatorKey) {
                 userObj.following.push(creatorKey);
-                
                 if (users[creatorKey]) {
                     if (!users[creatorKey].followers) users[creatorKey].followers = [];
                     if (!users[creatorKey].followers.includes(nickKey)) {
@@ -1888,7 +1833,7 @@
             return;
         }
 
-        tickets.reverse().forEach(t => {
+        tickets.slice().reverse().forEach(t => {
             list.innerHTML += `
                 <div class="support-ticket">
                     <div style="font-size:11px; color:var(--text-sub);">${t.date}</div>
@@ -1999,12 +1944,6 @@
             });
             targetUser.visitors = targetUser.visitors.slice(0, 20);
             saveUsersDB(users);
-
-            localStorage.setItem('profile_visit_event', JSON.stringify({
-                to: targetUser.username.toLowerCase(),
-                from: currentUser.username,
-                time: Date.now()
-            }));
         }
 
         const isCreator = targetNick.toLowerCase() === CREATOR_NICKNAME.toLowerCase();
@@ -2021,7 +1960,6 @@
         
         const isSelf = currentUser && currentUser.username.toLowerCase() === targetNick.toLowerCase();
 
-        /* СКРЫВАЕМ ГОСТЕЙ ОТ ДРУГИХ ЛЮДЕЙ — ГОСТЕЙ ВИДИТ ТОЛЬКО ВЛАДЕЛЕЦ */
         const visitorsStatBox = document.getElementById('visitorsStatBox');
         const visitorsSection = document.getElementById('visitorsSection');
 
@@ -2291,7 +2229,6 @@
 
         document.getElementById('nomTargetNick').value = '';
         updateNav();
-        renderNominations();
         showToast(`${targetNick} ${currentLang === 'ru' ? 'отправлен на голосование!' : 'submitted for voting!'}`, 'success');
     }
 
@@ -2325,8 +2262,6 @@
             saveNomsDB(noms);
             showToast(currentLang === 'ru' ? 'Ваш голос учтен!' : 'Vote counted!', 'success');
         }
-
-        renderAll();
     }
 
     function switchAdminTab(tab) {
@@ -2397,7 +2332,6 @@
         });
 
         saveUsersDB(users);
-        renderAll();
         showToast(`Заблокировано: ${count}`, 'success');
     }
 
@@ -2432,8 +2366,6 @@
         if (changedBoard) saveBoardDB(board);
         saveNomsDB(noms);
 
-        updateNav();
-        renderAll();
         showToast(`Удалено: ${checkboxes.length}`, 'info');
     }
 
@@ -2451,7 +2383,6 @@
         });
 
         saveUsersDB(users);
-        renderAll();
         showToast('Галочки сохранены!', 'success');
     }
 
@@ -2468,7 +2399,6 @@
         saveBoardDB(board);
 
         document.getElementById('adminNickInput').value = '';
-        renderBoard();
         showToast(`${nick} поставлен на #${rank}!`, 'success');
     }
 
@@ -2486,7 +2416,6 @@
         saveBoardDB(board);
 
         if (document.getElementById('adminRemoveRankInput')) document.getElementById('adminRemoveRankInput').value = '';
-        renderBoard();
         showToast(`${removedName} удален с места #${rank}!`, 'info');
     }
 
@@ -2494,6 +2423,7 @@
         const board = getBoardDB();
         const users = getUsersDB();
         const list = document.getElementById('leaderboard');
+        if (!list) return;
         list.innerHTML = '';
 
         const isCreatorUser = currentUser && currentUser.username.toLowerCase() === CREATOR_NICKNAME.toLowerCase();
@@ -2582,6 +2512,7 @@
     function renderNominations() {
         const noms = getNomsDB();
         const container = document.getElementById('nominationsList');
+        if (!container) return;
         container.innerHTML = '';
 
         if (noms.length === 0) {
@@ -2612,34 +2543,13 @@
     }
 
     function renderAll() {
+        updateNav();
         renderBoard();
         renderNominations();
-        if (currentUser && currentUser.username.toLowerCase() === CREATOR_NICKNAME.toLowerCase()) {
-            renderAdminAccountLists();
-        }
     }
 
-    function openAuthModal() { openModal('authModal'); }
-    function closeAuthModal() { closeModal('authModal'); }
-
-    /* События синхронизации сервера и посещений профиля */
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'server_force_update') {
-            renderAll();
-            showToast('Сервер был обновлен Создателем!', 'info');
-        }
-        if (e.key === 'profile_visit_event' && e.newValue) {
-            const data = JSON.parse(e.newValue);
-            if (currentUser && currentUser.username.toLowerCase() === data.to) {
-                showToast(`👀 ${data.from} ${currentLang === 'ru' ? 'прямо сейчас зашел на ваш профиль!' : 'just visited your profile!'}`, 'info');
-            }
-        }
-    });
-
-    /* Инициализация */
     applyTheme();
     applyLanguage();
-    renderAll();
 </script>
 </body>
 </html>
